@@ -6,7 +6,9 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -24,19 +26,28 @@ public class PrimaryAccount {
 	@OneToMany(mappedBy="primaryAccount",cascade= {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
 	private List<PrimaryTransaction> primarytransaction;
 	
+	@OneToOne(cascade= {CascadeType.PERSIST, CascadeType.MERGE,CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name="user_id")
+	private User user;
+	
 	public PrimaryAccount()
 	{
 		
 	}
+	
+	
 
 	public PrimaryAccount(long id, int accountNumber, BigDecimal accountBalance,
-			List<PrimaryTransaction> primarytransaction) {
+			List<PrimaryTransaction> primarytransaction, User user) {
 		super();
 		this.id = id;
 		this.accountNumber = accountNumber;
 		this.accountBalance = accountBalance;
 		this.primarytransaction = primarytransaction;
+		this.user = user;
 	}
+
+
 
 	public long getId() {
 		return id;
@@ -68,6 +79,15 @@ public class PrimaryAccount {
 
 	public void setPrimarytransaction(List<PrimaryTransaction> primarytransaction) {
 		this.primarytransaction = primarytransaction;
+	}
+	
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override
